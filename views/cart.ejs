@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Store</title>
+    <link rel="stylesheet" href="sass/main.css">
+    <script src="https://kit.fontawesome.com/56b56de47f.js" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <script src="scripts/script.js"></script>
+    <script src="scripts/serch.js"></script>
+    <script src="scripts/cart.js"></script>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;600&family=Satisfy&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <%- include("partials/navbar") %>
+    <section class="bag"> 
+        <div class="bagbox wrapper">
+            <div class="bagbox-order box">
+                <h3 class="box-heading">Your bag</h3>
+                <% cart.products.forEach(function(product, index) { %>
+                    <div class="order">
+                        <div class="order-img" style="background-image: url('<%= " /img/" + product.photoPath %>');"></div>
+                        <div class="order-info">
+                            <h4 class="order-info-element"><%= product.name %></h4>
+                            <select class="order-info-element" id="order-info-element-<%= index %>" name="quantity" onchange="updateQuantity('<%= index %>','<%= product.id %>')">
+                                <% for (let i=1; i <=product.quantity; i++) { %>
+                                    <option value="<%= i %>">
+                                        <%= i %>
+                                    </option>
+                                    <% } %>
+                            </select>
+                            <script> 
+                                document.getElementById("order-info-element-<%= index %>").value = "<%= product.quantityInCart %>";
+                            </script>
+                            <p class="order-price order-info-element"><%= product.price %>$</p>
+                        </div>
+                        <button class="delete-product-btn" onclick="removeProduct('<%= product.id %>')">X</button>
+                    </div>
+                <% }) %>
+            </div> 
+            <div class="media-right">
+                <div class="bagbox-delivery box">
+                    <h3 class="box-heading">Estimated delivery</h3>
+                    <p class="delivery-date" id="delivery-date"></p>
+                    <script src="scripts/deliveryDateInCart.js"></script>
+                </div> 
+                <div class="bagbox-payment box">
+                    <h3 class="box-heading">Payment</h3>
+                </div>
+                <div class="bagbox-total box">
+                    <h3 class="box-heading">Total</h3>
+                    <div class="total">
+                        <div class="total-info">
+                            <% cart.products.forEach(function(product, index) { %>
+                                <p><%= product.name %></p>
+                            <% }) %>
+                            <p class="empty-paragraph"></p>
+                            <b><p>Subtotal</p></b>
+                            <b><p>Delivery</p></b>
+                            <b><p class="total-price">Total</p></b>
+                        </div>
+                        <div class="total-info left">
+                            <% cart.products.forEach(function(product, index) { %>
+                                <p class="left"><%= product.price %>$ x <%= product.quantityInCart %> = <span class="multiply-price-and-quantity"><%= multiplyPriceAndQuantity(product.price, product.quantityInCart) %></span>$</p>
+                            <% }) %>
+                            <p class="empty-paragraph"></p>
+                            <b><p class="left"><span id="subtotal"></span>$</p></b>
+                            <b><p class="left"><span id="deliveryPrice"></span>$</p></b>
+                            <b><p class="left total-price"><span id="total"></span>$</p></b>
+                            <script src="scripts/totalPrice.js"></script>
+                        </div>
+                    </div>
+                    <div class="pay-btn-container"><button class="pay-btn button">Pay</button></div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <%- include("partials/newsletter") %>
+</body>
+
+</html>

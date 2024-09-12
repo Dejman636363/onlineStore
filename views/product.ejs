@@ -35,23 +35,11 @@
 						</h3>
 						<div class="total">
 							<div class="total-info">
-								<p>ilosc w magazynie</p>
-								<p>ilosc sztuk do koszyka</p>
 								<b>
 									<p>Cena</p>
 								</b>
 							</div>
 							<div class="total-info left">
-								<p class="left">
-									<%= product.quantity %>
-								</p>
-								<select class="left selekcik">
-									<% for (let i=1; i <=product.quantity; i++) { %>
-										<option value="<%= i %>">
-											<%= i %>
-										</option>
-										<% } %>
-								</select>
 								<b>
 									<p class="left">
 										<%= product.price %> $
@@ -59,7 +47,11 @@
 								</b>
 							</div>
 						</div>
-						<button class="add-btn button">add</button>
+						<form  action="/cart" method="POST">
+							<input type="hidden" name="product" value="<%=JSON.stringify(product) %>">
+							<button class="add-btn button" type="submit">add</button>
+						</form>
+						
 					</div>
 					<div class="productbox-description box">
 						<h3 class="box-heading">Opis</h3>
